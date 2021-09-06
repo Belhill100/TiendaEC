@@ -10,17 +10,34 @@ void View::mostrarMenuReportes()
     do
     {
 
-        cout << "Reportes\n"
-             << endl;
+        cout << "Menu Reportes\n"
+        cout << "1. Mostrar Productos por su cantidad\n";
+        cout << "2. Mostrar Productos por su tipo \n";
+        cout << "3. Mostrar ganacias obtenidas \n";
+        cout << "4. Ver todos los productos de la tienda \n";
+        cout << "5. Ver valor a pagar por IVA a la DIAN\n";
         cout << "0. Volver \n";
         std::cout << "Digita el numero: ";
         std::cin >> opcion;
 
         // TODO completar
-        switch (opcion)
-        {
+        switch (opcion){
+        case 1:
+            laFarra.mostrarProductCantidad();
+            break;
+        case 2:
+            laFarra.mostrarProductTipoVend();
+            break;
+        case 3:
+            cout << "Las ganancias totales son: " << laFarra.getGanancias() << "\n";
+            break;
+        case 4:
+            laFarra.mostrarProductos();
+            break;
+        case 5:
+            cout << "El valor a pagar por IVA es: " << laFarra.getIvaTotal() << "\n";
+            break;
         }
-
     } while (opcion != 0);
 }
 

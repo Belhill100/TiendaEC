@@ -36,6 +36,7 @@ public:		  //Metodos
 	void mostrarProductos();
 	void mostrarFacturas();
 	void vender();
+	void mostrarProductCantidad();
 	// Gets and sets
 	string getNombre();
 };
