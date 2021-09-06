@@ -4,10 +4,14 @@
 // Constructor por defecto
 Tienda::Tienda()
 {
+	this->ivaTotal = 0;
+	this->gananciasTotal = 0;
 	this->nombre = "La Farra";
 	this->contCodFactura = 1;
 	TipoProducto licor("Licor", 0.19);
 	TipoProducto snack("Snacks", 0.16);
+	this->categorias[1] = licor;
+	this->categorias[2] = snack;
 	Producto productoUno(licor, "Cerveza", 2500, 1800, 100, 10);
 	Producto productoDos(snack, "Papitas de limon margarita", 3000, 1000, 2, 50);
 	Producto productoTres(snack, "Papitas de pollo margarita", 3000, 1000, 3, 50);
@@ -75,26 +79,20 @@ void Tienda::agregarProducto()
 	inventario.insert(std::pair<int, Producto>(codigo, productoTemp));
 }
 
-void Tienda::agregarDetalle(float &totalIVA, float &totalSinIVA, float &totalGeneral, Factura &factura)
-{
+void Tienda::agregarDetalle(float &totalIVA, float &totalSinIVA, float &totalGeneral, Factura &factura){
 	int codigo, cantidad;
-
-	// Se busca el producto en el inventario.
-	//Se pregunta hasta que se encuentre un producto con el codigo ingresado
-	do
-	{
+	float iva, valorSinIva, valorTotal;
+	do{
 		cout << "Ingrese el codigoProductoComprar \n";
 		cin >> codigo;
-	} while (!existeProductoPorCod(codigo)); // while(existeProductoPorCod(codigo) == false);
-
+	} while (!existeProductoPorCod(codigo));
 	// Se dispone de inventario para la venta
-	Producto productoTemp = this->inventario[codigo]; // Se obtiene del mapa. Existe pq ya se hizo esta validacion
+	Producto productoTemp = this->inventario[codigo]; // Se obtiene del mapa.
 	do
 	{
 		cout << "Cuantos productos quiere comprar \n";
 		cin >> cantidad;
 	} while (cantidad <= 0 || cantidad > productoTemp.getCantUnidades()); // Cuando falla
-
 	// Hago la venta
 	float valorPagarIvaProd = cantidad *
 							  productoTemp.getTipoProducto().getIva() * productoTemp.getPrecio();
@@ -115,6 +113,7 @@ void Tienda::agregarDetalle(float &totalIVA, float &totalSinIVA, float &totalGen
 
 	// Disminuir a la cantidad de unidades vendidas al producto vendido
 	this->inventario[codigo].setCantUnidades(productoTemp.getCantUnidades() - cantidad);
+	this->gananciasTotal += calcularGanancias(productoTemp, cantidad);
 }
 
 void Tienda::vender()
@@ -153,6 +152,7 @@ void Tienda::vender()
 
 	// Se adiciona la factura a la coleccion para tener la lista de facturas
 	facturas.push_back(factura);
+	this->ivaTotal += totalIVA;
 }
 
 void Tienda::mostrarFacturas()
@@ -177,4 +177,53 @@ void Tienda::mostrarProductos()
 string Tienda::getNombre()
 {
 	return nombre;
+}
+
+void Tienda::mostrarProductCantidad(){
+	int cant;
+	cout << "Cantidad de productos:";
+	cin >> cant;
+	for(map<int, Producto>::iterator pProducto = inventario.begin(); pProducto != inventario.end(); pProducto++){
+		Producto valor = pProducto->second;
+		if(valor.getCantUnidades() < cant){
+			valor.mostrarProducto();
+		}
+	}
+}
+
+float Tienda::calcularGanancias(Producto productoTemp, int cantidad){
+	return(productoTemp.getPrecio() - productoTemp.getCosto()) * cantidad;
+}
+
+void Tienda::setGanancias(float gananciasTotal){
+	this->gananciasTotal = gananciasTotal;
+}
+
+float Tienda::getGanancias(){
+	return gananciasTotal;
+}
+
+void Tienda::setIvaTotal(float ivaTotal){
+	this->ivaTotal = ivaTotal;
+}
+
+float Tienda::getIvaTotal(){
+	return ivaTotal;
+}
+
+void Tienda::mostrarProductTipoVendidos(){
+	int tipo = 1, tipoDiferente = 2, cant1 = 0, cant2 = 0;
+	for (vector<Factura>::iterator pFactura = facturas.begin(); pFactura != facturas.end(); pFactura++){
+		for (vector<DetalleFactura>::iterator pDetalle = pFactura->getDetalles().begin(); pDetalle != pFactura->getDetalles().end(); pDetalle++){
+			DetalleFactura detalleTemp = *pDetalle;
+			if(detalleTemp.getProducto().getTipoProducto().getNombre() == categorias[tipo].getNombre()){
+				cant1 += detalleTemp.getCantUnidVend();
+			}
+			else{
+				cant2 += detalleTemp.getCantUnidVend();
+			}
+		}
+	}
+	cout << "Los productos tipo " << categorias[tipo].getNombre() << " vendidos son: " << cant1 << "\n";
+	cout << "Los productos tipo " << categorias[tipoDiferente].getNombre() << " vendidos son: " << cant2 << "\n";
 }

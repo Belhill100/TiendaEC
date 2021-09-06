@@ -10,7 +10,7 @@ void View::mostrarMenuReportes()
     do
     {
 
-        cout << "Menu Reportes\n"
+        cout << "Menu Reportes\n";
         cout << "1. Mostrar Productos por su cantidad\n";
         cout << "2. Mostrar Productos por su tipo \n";
         cout << "3. Mostrar ganacias obtenidas \n";
@@ -26,7 +26,7 @@ void View::mostrarMenuReportes()
             laFarra.mostrarProductCantidad();
             break;
         case 2:
-            laFarra.mostrarProductTipoVend();
+            laFarra.mostrarProductTipoVendidos();
             break;
         case 3:
             cout << "Las ganancias totales son: " << laFarra.getGanancias() << "\n";
