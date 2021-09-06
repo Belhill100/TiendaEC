@@ -101,9 +101,6 @@ void Tienda::agregarDetalle(float &totalIVA, float &totalSinIVA, float &totalGen
 	float valorPagarSinIVAProd = productoTemp.getPrecio() * cantidad;
 	float valorTotalProd = valorPagarIvaProd + valorPagarSinIVAProd;
 
-	cout << "lo que va";
-	cout << valorPagarIvaProd << valorPagarSinIVAProd << valorTotalProd;
-
 	// Agregan los datos al detalle de venta, aprovecho el constructor
 	DetalleFactura detalle(productoTemp, cantidad, valorPagarSinIVAProd,
 						   valorPagarIvaProd, valorTotalProd);
@@ -180,37 +177,4 @@ void Tienda::mostrarProductos()
 string Tienda::getNombre()
 {
 	return nombre;
-}
-
-void Tienda::mostrarProductCantidad(){
-	int cant;
-	cout << "Cantidad de productos:";
-	cin >> cant;
-	for(map<int, Producto>::iterator pProducto = inventario.begin(); pProducto != inventario.end(); pProducto++){
-		Producto valor = pProducto->second;
-		if(valor.getCantUnidades < cant){
-			valor.mostrarProducto();
-		}
-	}
-}
-
-void Tienda::mostrarProductTipo(){
-	int tipo;
-	cout << "Ingrese el tipo de producto";
-	cin >> tipo;
-	for(map<int, Producto>::iterator pProducto = inventario.begin(); pProducto != inventario.end(); pProducto++){
-		Producto valor = pProducto->second;
-		if(valor.getTipoProducto().getNombre() == tipo){
-			valor.mostrarProducto();
-		}
-	}
-}
-
-
-
-float Tienda::getGananciaTienda(){
-	int i = 0;
-	for(vector<Factura>::iterator pFactura = facturas.begin; pProducto != facturas.end(); pFactura++){
-		
-	}
 }

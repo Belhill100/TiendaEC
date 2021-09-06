@@ -27,7 +27,7 @@ public:				  //Metodos
 
 	// Gets and sets
 	Producto getProducto();
-	void setProducto(Producto producto);
+	void serProducto(Producto producto);
 	float getValorTotal();
 	void setValorTotal(float valorTotal);
 	float getValorPagarSinIVA();
